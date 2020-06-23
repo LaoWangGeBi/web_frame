@@ -1,59 +1,63 @@
-package main
+package GetFileList
 
 import (
-    "fmt"
     "io/ioutil"
     "strings"
-    "encoding/json"
+    "web_frame/DataStruct"
 )
 
-// 文件列表
-type FileInfoObj struct {
-    F_name  string  `json:"F_name"`
-    F_dir   string  `json:"F_dir"`
-    F_type  string  `json:"F_type"`
-    F_type2 string  `json:"F_type2"`
-    F_list  []FileInfoObj  `json:"F_list"`
-}
+// func main() {
+//     _arr := ListFile(`D:\Work`)
+//     //fmt.Print(_arr);
+//     //var f_obj FileInfoObj
+//     for i, val := range _arr{
+//         fmt.Print(i)
+//         fmt.Print(`--------`)
+//         //b, err = json.Marshal(val)
+//         fmt.Println(val)
+//         fmt.Println(`---------------------------------`)
+//     }
+// }
 
-func main() {
-    _arr := ListFile(`G:\waibao\mdk麦迪科\web`)
-    //fmt.Print(_arr);
-    var f_obj FileInfoObj
-    for i, val := range _arr{
-        fmt.Print(i)
-        fmt.Print(`--------`)
-        b, err = json.Marshal(val)
-        fmt.Println(b)
-        fmt.Println(`---------------------------------`)
-    }
-}
-
-// 获取文件列表
-func ListFile(myfolder string) []FileInfoObj {
+// 获取文件列表(全部)
+func ListFileAll(myfolder string) []GetFiles.FileInfoObj {
     files, _ := ioutil.ReadDir(myfolder)
     var f_len int = len(files)
-    var _arr = make([]FileInfoObj,f_len)
-    //var _arr2 = [2]string{}
-    f_obj := &FileInfoObj{}
+    var _arr = make([]GetFiles.FileInfoObj,f_len)
+    var f_obj GetFiles.FileInfoObj
     for i, file := range files {
         f_obj.F_dir = myfolder+`\`+file.Name()
         f_obj.F_name = file.Name()
         if file.IsDir() {
             f_obj.F_type = "dir"
             f_obj.F_type2 = ""
-            f_obj.F_list = ListFile(myfolder+`\`+f_obj.F_name)
+            f_obj.F_list = ListFile(f_obj.F_dir)
         } else {
             f_obj.F_type = "file"
-            f_obj.F_type2 = strings.Split(f_obj.F_name,".")[1]
+            f_obj.F_type2 = strings.Split(f_obj.F_name,".")[len(strings.Split(f_obj.F_name,"."))-1]
         }
-        json_str, err := json.Marshal(f_obj)
-        if err == nil{
-            _arr[i] = f_obj
-        }else{
-            _arr[i] = ""
-        }
+        _arr[i] = f_obj
     }
-    fmt.Println(`||||||||||||||||||||||||||||||||||||||||||`)
+    return _arr
+}
+
+// 获取文件列表(一级)
+func ListFile(myfolder string) []GetFiles.FileInfoObj {
+    files, _ := ioutil.ReadDir(myfolder)
+    var f_len int = len(files)
+    var _arr = make([]GetFiles.FileInfoObj,f_len)
+    var f_obj GetFiles.FileInfoObj
+    for i, file := range files {
+        f_obj.F_dir = myfolder+`\`+file.Name()
+        f_obj.F_name = file.Name()
+        if file.IsDir() {
+            f_obj.F_type = "dir"
+            f_obj.F_type2 = ""
+        } else {
+            f_obj.F_type = "file"
+            f_obj.F_type2 = strings.Split(f_obj.F_name,".")[len(strings.Split(f_obj.F_name,"."))-1]
+        }
+        _arr[i] = f_obj
+    }
     return _arr
 }
