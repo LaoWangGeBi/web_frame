@@ -4,9 +4,11 @@ import (
     "fmt"
     "net/http"
     "strings"
+    "io"
     "log"
+    //"strconv"
     "web_frame/GetFileList"
-    //"encoding/json"
+    "encoding/json"
 )
 
 func sayhelloName(w http.ResponseWriter, r *http.Request) {
@@ -16,17 +18,19 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
     // fmt.Println("scheme", r.URL.Scheme)
     // fmt.Println("URL", r.URL)
     // fmt.Println(r.Form["url_long"])
-    _arr := GetFileList.ListFile(`D:\Work`)
-    //b, _ := json.Marshal(_arr);
+    _arr := GetFileList.ListFile(`G:\waibao\mdk麦迪科\web`)
+    b, _ := json.Marshal(_arr);
     for k, v := range r.Form {
         fmt.Println("key:", k)
         fmt.Println("val:", strings.Join(v, ""))
     }
-    for k, v := range _arr {
-        fmt.Println("key:", k)
-        fmt.Println("val:", v)
-        fmt.Println("$$$$$$$$$$$$$$$$$$$$")
-    }
+    // for k, v := range _arr {
+    //     fmt.Println("key:", k)
+    //     fmt.Println("val:", v)
+    //     io.WriteString(w, strconv.Itoa(k)+":")
+    //     io.WriteString(w,"\n")
+    // }
+    io.WriteString(w,string(b))
     fmt.Fprintf(w, "asdfsadf") //这个写入到w的是输出到客户端的
 }
 
