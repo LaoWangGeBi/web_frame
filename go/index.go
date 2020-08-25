@@ -7,7 +7,7 @@ import (
     "io"
     "log"
     //"strconv"
-    "web_frame/GetFileList"
+    "web_frame/go/GetFileList"
     "encoding/json"
 )
 
@@ -18,7 +18,7 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
     // fmt.Println("scheme", r.URL.Scheme)
     // fmt.Println("URL", r.URL)
     // fmt.Println(r.Form["url_long"])
-    _arr := GetFileList.ListFile(`G:\waibao\mdk麦迪科\web`)
+    _arr := GetFileList.ListFile(`D:\Work`)
     b, _ := json.Marshal(_arr);
     for k, v := range r.Form {
         fmt.Println("key:", k)

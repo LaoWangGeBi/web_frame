@@ -3,7 +3,7 @@ package GetFileList
 import (
     "io/ioutil"
     "strings"
-    "web_frame/DataStruct"
+    "web_frame/go/DataStruct"
 )
 
 // func main() {
